@@ -1,9 +1,29 @@
 $(document).ready(function () {
-	var testFunction = function (data) {
-		console.log(data);
-	};
+	approximateLocation();
 
-	// Retrieve user information based on IP approximation
+});
+
+var processData = function (data) {
+	// Send user location to OpenWeatherMap
+		// Store API Key
+		var apiKey = "9f7c06d0eb23c68b0fc17fec2280429b";
+		// Store Latitude Location
+		var latLocation = data.latitude;
+		// Store Longitude Location
+		var longLocation = data.longitude;
+
+		console.log("http://api.openweathermap.org/data/2.5/weather?lat=" + latLocation + "&lon=" + longLocation + "&appid=" + apiKey);
+
+		// Retrieve information for current weather conditions
+		$.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + latLocation + "&lon=" + longLocation + "&appid=" + apiKey).done (function (currentWeather) {
+			console.log(currentWeather)
+		});
+			
+	console.log(data);
+};
+
+var approximateLocation = function () {
+	// Retrieve user information based on IP approximation. Courtesty of GeoIP Database
 	$.getJSON('https://geoip-db.com/json/geoip.php?jsonp=?') 
 	.done (function(location)
 	{
@@ -14,6 +34,8 @@ $(document).ready(function () {
 		$('#latitude').html(location.latitude);
 		$('#longitude').html(location.longitude);
 		$('#ip').html(location.IPv4);
-		testFunction(location);
+
+		// Call additional function
+		processData(location);
 	});
-});
+};
