@@ -11,12 +11,34 @@ var processData = function (data) {
 		var latLocation = data.latitude;
 		// Store Longitude Location
 		var longLocation = data.longitude;
+		// Store Unit
+		var unitDefault = "metric"
 
-		console.log("http://api.openweathermap.org/data/2.5/weather?lat=" + latLocation + "&lon=" + longLocation + "&appid=" + apiKey);
 
 		// Retrieve information for current weather conditions
-		$.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + latLocation + "&lon=" + longLocation + "&appid=" + apiKey).done (function (currentWeather) {
-			console.log(currentWeather)
+		$.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + latLocation + "&lon=" + longLocation + "&appid=" + apiKey + "&units=" + unitDefault).done (function (currentWeather) {
+			console.log(currentWeather);
+			
+			// Get location information
+			var currentCity = currentWeather.name;
+
+			// Get Temperature Information
+			var currentTemp = Math.round(currentWeather.main.temp);
+			console.log("The current temperature is " + currentTemp);
+			var currentHumidity = currentWeather.main.humidity;
+			console.log("The current humidty is " + currentHumidity);
+			var currentCloudiness = currentWeather.clouds.all;
+			console.log("The current cloudiness is " + currentCloudiness);
+
+			// Get current weather condition
+			var currentConditionsId = currentWeather.weather[0].id;
+			console.log("Current conditions ID is: " + currentConditionsId);
+			var currentConditionsDescription = currentWeather.weather[0].description;
+			console.log("Current conditions is : " + currentConditionsDescription);
+			// Display current weather condition
+				// Display humidity
+				// Display temperature
+					// Perform C to F conversion
 		});
 			
 	console.log(data);
