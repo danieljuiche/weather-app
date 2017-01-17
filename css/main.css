@@ -1,0 +1,18 @@
+body {
+	background-color: grey;
+}
+
+.weather-icon {
+	width: 64px;
+	height: 64px;
+	margin: auto;
+}
+
+.display-box {
+	background-color: rgba(255, 255, 255, 0.7);
+	border-radius: 10px;
+}
+
+.sunny {
+	content:url('../images/icons/sunny.png');
+}
