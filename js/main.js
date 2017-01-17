@@ -57,7 +57,7 @@ var approximateLocation = function () {
 		$('#longitude').html(location.longitude);
 		$('#ip').html(location.IPv4);
 
-		// Call additional function
+		// Retrieve local weather conditions based on user location
 		processData(location);
 	});
 };
