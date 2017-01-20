@@ -17,7 +17,7 @@ var processData = function (data) {
 
 		// Retrieve information for current weather conditions
 		$.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + latLocation + "&lon=" + longLocation + "&appid=" + apiKey + "&units=" + unitDefault).done (function (currentWeatherData) {
-			console.log(currentWeatherData);
+			// console.log(currentWeatherData);
 			updateWeatherConditions(currentWeatherData);
 		});
 };
@@ -25,16 +25,7 @@ var processData = function (data) {
 var approximateLocation = function () {
 	// Retrieve user information based on IP approximation. Courtesty of GeoIP Database
 	$.getJSON('https://geoip-db.com/json/geoip.php?jsonp=?') 
-	.done (function(location)
-	{
-		$('#country').html(location.country_name);
-		$('#state').html(location.state);
-		$('#city').html(location.city);
-		$('#postal').html(location.postal);
-		$('#latitude').html(location.latitude);
-		$('#longitude').html(location.longitude);
-		$('#ip').html(location.IPv4);
-
+	.done (function(location) {
 		// Retrieve local weather conditions based on user location
 		processData(location);
 	});
@@ -51,24 +42,16 @@ var updateWeatherConditions = function (currentWeatherData) {
 
 	// Get Temperature Information
 	var currentTemp = Math.round(currentWeatherData.main.temp);
-	// console.log("The current temperature is " + currentTemp);
 	var currentHumidity = currentWeatherData.main.humidity;
-	// console.log("The current humidty is " + currentHumidity);
 	var currentCloudiness = currentWeatherData.clouds.all;
-	// console.log("The current cloudiness is " + currentCloudiness);
 
 	// Get current weather icon
 	var currentIconPath = currentWeatherData.weather[0].icon;
 	// Get current weather condition
 	var currentConditionsId = currentWeatherData.weather[0].id;
-	// console.log("Current conditions ID is: " + currentConditionsId);
 	var currentConditionsDescription = currentWeatherData.weather[0].description;
-	// console.log("Current conditions is : " + currentConditionsDescription);
-	console.log(currentConditionsId);
 
 	$('html').css("background-image", "url("+imagePathFinder(currentIconPath, "backgroundPath")+")");
-
-	currentIconPath = iconConversion(currentIconPath);
 
 	// Update HTML to display current weather conditions
 	$('.city-country').html(currentCity + ", " + currentCountry);
@@ -76,7 +59,7 @@ var updateWeatherConditions = function (currentWeatherData) {
 	// Update html to display weather icon
 	$('.weather-icon').attr("width", "64px");
 	$('.weather-icon').attr("height", "64px");
-	$('.weather-icon').attr("src", currentIconPath);
+	$('.weather-icon').attr("src", imagePathFinder(currentIconPath, "iconPath"));
 
 	// Update html to display weather description
 	$('.weather-desc').html(currentConditionsDescription.replace(/\b\w/g, l => l.toUpperCase()));
@@ -113,122 +96,98 @@ var updateTime = function (currentTime) {
 	$('.time').html(currentTime);
 }
 
-var iconConversion = function (icon) {
-	var iconObj = {
-		"01d": "sunny.png",
-		"01n": "moon-8.png",
-		"02d": "clouds-1.png",
-		"02n": "cloudy-night.png",
-		"03d": "clouds.png",
-		"03n": "clouds.png",
-		"04d": "clouds.png",
-		"04n": "clouds.png",
-		"09d": "raining.png",
-		"09n": "raining.png",
-		"10d": "morning-rain.png",
-		"10n": "night-rain.png",
-		"11d": "storm.png",
-		"11n": "storm-1.png",
-		"13d": "snowing-1.png",
-		"13n": "snow.png",
-		"50d": "mist.png",
-		"50n": "mist.png",
-	}
-	var filePath = "images/icons/";
-	return filePath + iconObj[icon];
-}
-
+// Image path finder helper function
 var imagePathFinder = function (icon, queryTerm) {
  	var filePath = "images/";
  	var weatherInformation = {
  		"01d": {
  			"description": "clear sky",
- 			"iconPath": "sunny.png",
+ 			"iconPath": "icons/sunny.png",
  			"backgroundPath": "clear-sky-day.jpg"
  		},
  		"01n": {
  			"description": "clear sky",
- 			"iconPath": "moon-8.png",
+ 			"iconPath": "icons/moon-8.png",
  			"backgroundPath": "clear-sky-night.jpg"
  		},
  		"02d": {
  			"description": "few clouds",
- 			"iconPath": "clouds-1.png",
+ 			"iconPath": "icons/clouds-1.png",
  			"backgroundPath": "few-clouds-day.jpg"
  		},
  		"02n": {
  			"description": "few clouds",
- 			"iconPath": "cloudy-night.png",
+ 			"iconPath": "icons/cloudy-night.png",
  			"backgroundPath": "few-clouds-night.jpg"
  		},
  		"03d": {
  			"description": "scattered clouds",
- 			"iconPath": "clouds.png",
+ 			"iconPath": "icons/clouds.png",
  			"backgroundPath": "scatter-cloud-day.jpg"
  		},
  		"03n": {
  			"description": "scattered clouds",
- 			"iconPath": "clouds.png",
+ 			"iconPath": "icons/clouds.png",
  			"backgroundPath": "scatter-cloud-night.jpg"
  		},
  		"04d": {
  			"description": "broken clouds",
- 			"iconPath": "clouds.png",
+ 			"iconPath": "icons/clouds.png",
  			"backgroundPath": "broken-cloud-day.jpg"
  		},
  		"04n": {
  			"description": "broken clouds",
- 			"iconPath": "clouds.png",
+ 			"iconPath": "icons/clouds.png",
  			"backgroundPath": "broken-cloud-night.jpg"
  		},
  		"09d": {
  			"description": "shower rain",
- 			"iconPath": "sunny-cloud.jpg",
+ 			"iconPath": "icons/raining.png",
  			"backgroundPath": "shower-rain-day.jpg"
  		},
  		"09n": {
  			"description": "shower rain",
- 			"iconPath": "moon-8.png",
+ 			"iconPath": "icons/raining.png",
  			"backgroundPath": "shower-rain-night.jpg"
  		},
  		"10d": {
  			"description": "rain",
- 			"iconPath": "sunny.png",
+ 			"iconPath": "icons/morning-rain.png",
  			"backgroundPath": "rain-day.jpg"
  		},
  		"10n": {
  			"description": "rain",
- 			"iconPath": "moon-8.png",
+ 			"iconPath": "icons/night-rain.png",
  			"backgroundPath": "rain-night.jpg"
  		},
  		"11d": {
  			"description": "thunderstorm",
- 			"iconPath": "sunny.png",
+ 			"iconPath": "icons/storm.png",
  			"backgroundPath": "thunderstorm-day"
  		},
  		"11n": {
  			"description": "thunderstorm",
- 			"iconPath": "moon-8.png",
+ 			"iconPath": "icons/storm-1.png",
  			"backgroundPath": "thunderstorm-night.jpg"
  		},
  		"13d": {
  			"description": "snow",
- 			"iconPath": "sunny.png",
+ 			"iconPath": "icons/snowing-1.png",
  			"backgroundPath": "snow-day.jpg"
  		},
  		"13n": {
  			"description": "snow",
- 			"iconPath": "moon-8.png",
+ 			"iconPath": "icons/snow.png",
  			"backgroundPath": "snow-night.jpg"
  		},
  		"50d": {
  			"description": "mist",
- 			"iconPath": "sunny.png",
+ 			"iconPath": "icons/mist.png",
  			"backgroundPath": "mist-day.jpg"
  		},
  		"50n": {
  			"description": "mist",
- 			"iconPath": "moon-8.png",
+ 			"iconPath": "icons/mist.png",
  			"backgroundPath": "mist-night.jpg"
  		},
  	}
