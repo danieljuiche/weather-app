@@ -17,7 +17,7 @@ var processData = function (data) {
 
 		// Retrieve information for current weather conditions
 		$.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + latLocation + "&lon=" + longLocation + "&appid=" + apiKey + "&units=" + unitDefault).done (function (currentWeatherData) {
-			// console.log(currentWeatherData);
+			console.log(currentWeatherData);
 			updateWeatherConditions(currentWeatherData);
 		});
 };
@@ -36,10 +36,6 @@ var updateWeatherConditions = function (currentWeatherData) {
 	var currentCity = currentWeatherData.name;
 	var currentCountry = currentWeatherData.sys.country;
 
-	// Get time information in UNIX
-	var currentTime = timeConversion(currentWeatherData.dt);
-	updateTime(currentTime);
-
 	// Get Temperature Information
 	var currentTemp = Math.round(currentWeatherData.main.temp);
 	var currentHumidity = currentWeatherData.main.humidity;
@@ -54,6 +50,9 @@ var updateWeatherConditions = function (currentWeatherData) {
 	var currentConditionsDescription = currentWeatherData.weather[0].description;
 
 	$('html').css("background-image", "url("+imagePathFinder(currentIconPath, "backgroundPath")+")");
+
+	// Update time
+	updateTime();
 
 	// Update HTML to display current weather conditions
 	$('.city-country').html(currentCity + ", " + currentCountry);
@@ -76,25 +75,29 @@ var updateLocation = function (latitude, longitude) {
 	$('.longitude').html("Longitude: " + longitude);
 }
 
-var timeConversion = function (unixTime) {
-	var date = new Date(unixTime*1000);
-	// Hours part from the timestamp
-	var hours = date.getHours();
-	if (hours <= 9) {
-		hours = "0" + hours;
-	}
-	// Minutes part from the timestamp
-	var minutes = "0" + date.getMinutes();
-	// Seconds part from the timestamp
-	var seconds = "0" + date.getSeconds();
-
-	// Will display time in 10:30:23 format
-	var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-	return formattedTime;
+var updateTime = function () {
+	var d = new Date();
+	$('.date').html(dayOfWeekConverter(d.getDay()) + ", " + monthConverter(d.getMonth()) + " " + d.getDate() + " " + d.getFullYear());
+	$('.time').html(timeConvertor(d.getHours()) + ":" + timeConvertor(d.getMinutes()) + ":" + timeConvertor(d.getSeconds()));
 }
 
-var updateTime = function (currentTime) {
-	$('.time').html(currentTime);
+var timeConvertor = function (integer) {
+	if (integer < 10) {
+		return "0" + integer;
+	}
+	else {
+		return integer;
+	}
+}
+
+var dayOfWeekConverter = function (integer) {
+	var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	return daysOfWeek[integer];
+}
+
+var monthConverter = function (integer) {
+	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	return months[integer];
 }
 
 // Image path finder helper function

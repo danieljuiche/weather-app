@@ -86,7 +86,7 @@ footer a {
 }
 
 footer a:hover {
-	color: black;
+	color: rgba(0, 0, 0, 0.75);
 	text-decoration: none;
 }
 
