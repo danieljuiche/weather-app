@@ -1,5 +1,10 @@
 $(document).ready(function () {
-	approximateLocation();
+	if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		approximateLocation();
+	}
+	else {
+		mobileDeviceHandler();
+	}
 });
 
 var processData = function (data) {
@@ -224,4 +229,16 @@ var updateWeatherStatus = function (weatherConditionArray) {
 		"color": "#616161",
 		"margin-top": "10px"
 	});
+}
+
+var mobileDeviceHandler = function () {
+	$('.display-box').append('<h2 class="mobile-alert">Sorry, this application is not mobile optimized. Please revisit on a computer!</h2>');
+	$('h1').css("font-size", "2em");
+	$('h2').css("font-size", "1.5em");
+	$('h2, h4').css("margin-top","0px");
+	$('h2, h4').css("margin-bottom","0px");
+	$('.weather-status-container').css("padding", "0px");
+	$('.mobile-alert').css("margin", "10px 0px");
+	$('.display-box').append('<a href="http://danieljuiche.com">Click here for other projects!</a>');
+	$('.attribution-container').hide();
 }
