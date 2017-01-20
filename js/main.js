@@ -201,14 +201,24 @@ var imagePathFinder = function (icon, queryTerm) {
 
 var updateWeatherStatus = function (weatherConditionArray) {
 	var counter = 1;
+	var conditionArray = [];
 	weatherConditionArray.forEach( function (condition) {
-		$('.weather-status-container').append('<div class="container' + counter + '">' );
-		$('.container' + counter).append('<img class="weather-icon" src="' + imagePathFinder(condition.icon, "iconPath") + '">');
-		$('.container' + counter).append('<h2 class="weather-desc">' + imagePathFinder(condition.icon,"description").replace(/\b\w/g, l => l.toUpperCase()) + '</h2>')
-		$('.container' + counter).append('</div');
-		counter++;
+		if (($.inArray(condition.icon, conditionArray)) === -1) {
+			var newContainer = '.container' + counter;
+			$('.weather-status-container').append('<div class="container' + counter + '">' );
+			$(newContainer).append('<img class="weather-icon" src="' + imagePathFinder(condition.icon, "iconPath") + '">');
+			$(newContainer).append('<h2 class="weather-desc">' + imagePathFinder(condition.icon,"description").replace(/\b\w/g, l => l.toUpperCase()) + '</h2>')
+			$(newContainer).append('</div');
+			$(newContainer).css("margin-bottom", "15px");
+			
+			conditionArray.push(condition.icon);
+			counter++;
+		}
 	});
 
-	$('.weather-desc').css('font-size','2em');
-	$('.weather-desc').css('color', '#616161');
+	$('.weather-desc').css({
+		"font-size": "2em",
+		"color": "#616161",
+		"margin-top": "10px"
+	});
 }

@@ -1,5 +1,7 @@
 body {
 	background-color: transparent;
+    margin: 0 0 40px; /* bottom = footer height */
+    padding: 25px;
 }
 
 .layer {
@@ -20,6 +22,9 @@ html {
   /*css hack for ie*/     
   filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.image.jpg',sizingMethod='scale');
   -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='image.jpg',sizingMethod='scale')";
+
+  position: relative;
+  min-height: 100%;
 }
 
 h1 {
@@ -65,4 +70,33 @@ h2 {
   bottom: 0px;
   left: 0;
   right: 0;
+}
+
+footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 40px;
+  width: 100%;
+  overflow:hidden;
+}
+
+footer a {
+	color: black;
+}
+
+footer a:hover {
+	color: black;
+	text-decoration: none;
+}
+
+footer a:focus {
+	outline: none;
+	text-decoration: none;
+	color: black;
+}
+
+footer p {
+	color: black;
+	margin: 0px;
 }
