@@ -23,6 +23,7 @@ html {
 }
 
 h1 {
+	color: black;
 	font-size: 3em;
 }
 
@@ -31,12 +32,21 @@ h2 {
 }
 
 .time {
+	color: #5a5a5a;
 	font-size: 3em;
+}
+
+.city-country {
+	margin-bottom: 20px;
 }
 
 .weather-icon {
 	margin: auto;
 	border-image-width: 0px;
+}
+
+.weather-status-container {
+	padding: 10px 0px;
 }
 
 .display-box {
@@ -51,8 +61,8 @@ h2 {
 }
 
 .attribution {
-    position: fixed;
-    bottom: 0px;
-    left: 0;
-    right: 0;
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  right: 0;
 }

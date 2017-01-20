@@ -47,6 +47,8 @@ var updateWeatherConditions = function (currentWeatherData) {
 
 	// Get current weather icon
 	var currentIconPath = currentWeatherData.weather[0].icon;
+	updateWeatherStatus(currentWeatherData.weather);
+
 	// Get current weather condition
 	var currentConditionsId = currentWeatherData.weather[0].id;
 	var currentConditionsDescription = currentWeatherData.weather[0].description;
@@ -59,10 +61,9 @@ var updateWeatherConditions = function (currentWeatherData) {
 	// Update html to display weather icon
 	$('.weather-icon').attr("width", "64px");
 	$('.weather-icon').attr("height", "64px");
-	$('.weather-icon').attr("src", imagePathFinder(currentIconPath, "iconPath"));
 
 	// Update html to display weather description
-	$('.weather-desc').html(currentConditionsDescription.replace(/\b\w/g, l => l.toUpperCase()));
+	// $('.weather-desc').html(currentConditionsDescription.replace(/\b\w/g, l => l.toUpperCase()));
 
 	// Update Html to display other information
 	$('.temperature').html("Temperature: " + currentTemp + " &deg;C");
@@ -191,5 +192,23 @@ var imagePathFinder = function (icon, queryTerm) {
  			"backgroundPath": "mist-night.jpg"
  		},
  	}
- 	return filePath + weatherInformation[icon][queryTerm];
+ 	if (queryTerm === "iconPath" || queryTerm === "backgroundPath") {
+ 		return filePath + weatherInformation[icon][queryTerm];
+ 	} else {
+ 		return weatherInformation[icon][queryTerm];
+ 	}
+}
+
+var updateWeatherStatus = function (weatherConditionArray) {
+	var counter = 1;
+	weatherConditionArray.forEach( function (condition) {
+		$('.weather-status-container').append('<div class="container' + counter + '">' );
+		$('.container' + counter).append('<img class="weather-icon" src="' + imagePathFinder(condition.icon, "iconPath") + '">');
+		$('.container' + counter).append('<h2 class="weather-desc">' + imagePathFinder(condition.icon,"description").replace(/\b\w/g, l => l.toUpperCase()) + '</h2>')
+		$('.container' + counter).append('</div');
+		counter++;
+	});
+
+	$('.weather-desc').css('font-size','2em');
+	$('.weather-desc').css('color', '#616161');
 }
