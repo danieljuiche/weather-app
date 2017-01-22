@@ -66,11 +66,9 @@ var updateWeatherConditions = function (currentWeatherData) {
 	$('.weather-icon').attr("width", "64px");
 	$('.weather-icon').attr("height", "64px");
 
-	// Update html to display weather description
-	// $('.weather-desc').html(currentConditionsDescription.replace(/\b\w/g, l => l.toUpperCase()));
-
 	// Update Html to display other information
-	$('.temperature').html("Temperature: " + currentTemp + " &deg;C");
+	updateTemperature(currentTemp);
+
 	$('.humidity').html("Humidity: " + currentHumidity + "%");
 	$('.cloudiness').html("Cloudiness: " + currentCloudiness + "%");
 }
@@ -241,4 +239,36 @@ var mobileDeviceHandler = function () {
 	$('.mobile-alert').css("margin", "10px 0px");
 	$('.display-box').append('<a href="http://danieljuiche.com">Click here for other projects!</a>');
 	$('.attribution-container').hide();
+}
+
+var updateTemperature = function (temperature) {
+	$('.temperature').html("Temperature: " + temperature);
+	$('.temperature').css("display","inline-block");
+	$('.temperature').css("margin","0px");
+	$('.temp-convert').css("display", "inline-block");
+	$('.temp-convert').html("&deg; C");
+	$('.temp-convert').css({
+		"font-size": "18px",
+		"text-decoration": "none"
+	});
+
+	// Unit conversion event listener
+	$('.temp-convert').click(function (){
+		if ($(this).hasClass("metric")) {
+			$(this).removeClass("metric");
+			$('.temperature').html("Temperature: " + convertMetricToImperial(temperature));
+			$(this).html("&deg; F");
+			$(this).addClass("imperial");
+		}
+		else {
+			$(this).removeClass("imperial");
+			$('.temperature').html("Temperature: " + temperature);
+			$(this).html("&deg; C");
+			$(this).addClass("metric");
+		}
+	});
+}
+
+var convertMetricToImperial = function (temperature) {
+	return (temperature * 9 / 5) + 32;
 }
