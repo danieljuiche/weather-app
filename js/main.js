@@ -1,18 +1,8 @@
 $(document).ready(function () {
+	init();
+});
 
-	var mobileDeviceHandler = function () {
-		$('.display-box').append('<h2 class="mobile-alert">Sorry, this application is not mobile optimized. Please revisit on a computer!</h2>');
-		$('h1').css("font-size", "2em");
-		$('h2').css("font-size", "1.5em");
-		$('h2, h4').css("margin-top","0px");
-		$('h2, h4').css("margin-bottom","0px");
-		$('.weather-status-container').css("padding", "0px");
-		$('.mobile-alert').css("margin", "10px 0px");
-		$('.display-box').append('<a href="http://danieljuiche.com">Click here for other projects!</a>');
-		$('.attribution-container').hide();
-	}
-
-	var approximateLocation = function () {
+var approximateLocation = function () {
 		// Retrieve user information based on IP approximation. Courtesty of GeoIP Database
 		$.getJSON('https://geoip-db.com/json/geoip.php?jsonp=?') 
 		.done (function(location) {
@@ -268,9 +258,55 @@ $(document).ready(function () {
 		return (temperature * 9 / 5) + 32;
 	}
 
-	if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-		mobileDeviceHandler();
+function init(){
+	adsBlocked(function(blocked){
+		if(isMobile()) {
+			displayErrorMessage('Sorry, this application is not mobile optimized. Please revisit on a computer!');
+		} else if (blocked) {
+			displayErrorMessage("Please disable adblocker and refresh the page!");
+		} else {
+			approximateLocation();
+		}
+	});
+}
+
+function displayErrorMessage (errorMessage) {
+	$('.display-box').append('<h2 class="mobile-alert">' + errorMessage + '</h2>');
+	$('h1').css("font-size", "2em");
+	$('h2').css("font-size", "1.5em");
+	$('h2, h4').css("margin-top","0px");
+	$('h2, h4').css("margin-bottom","0px");
+	$('.weather-status-container').css("padding", "0px");
+	$('.mobile-alert').css("margin", "10px 0px");
+	$('.display-box').append('<a href="http://danieljuiche.com">Click here for other projects!</a>');
+	$('.attribution-container').hide();
+}
+
+function isMobile() {
+	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+		return true;
 	} else {
-		approximateLocation();
+		return false;
 	}
-});
+}
+
+function adsBlocked(callback){
+  var testURL = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+
+  var myInit = {
+    method: 'HEAD',
+    mode: 'no-cors'
+  };
+
+  var myRequest = new Request(testURL, myInit);
+
+  fetch(myRequest).then(function(response) {
+    return response;
+  }).then(function(response) {
+    console.log(response);
+    callback(false)
+  }).catch(function(e){
+    console.log(e)
+    callback(true)
+  });
+}
